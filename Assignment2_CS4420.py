@@ -6,26 +6,41 @@
 import cv2
 import numpy as np
 import random
+import os
 import argparse
+#from PIL import Image // i dont know what this is used for
 from screeninfo import get_monitors
 
 #selfnote: when getting pictures make sure to get copyright free and location of where you receieved the picture
 
 def main():
     # Arguments
-    parser = argparse.ArgumentParser(prog='browser') # -h should be automatically added because of argparse
+    parser = argparse.ArgumentParser(prog='corpus') # -h should be automatically added because of argparse
     parser.add_argument('-a') # preserve the aspect ratio of the image
     parser.add_argument('-g') # save the output image as grayscale (default: save as input)
-    parser.add_argument('-rows', type=int, default=0) # -r max number of rows
-    parser.add_argument('-cols', type=int, default=0) # -c max number of cols
+    parser.add_argument('-rows', type=int, default=480) # -r max number of rows
+    parser.add_argument('-cols', type=int, default=640) # -c max number of cols
     parser.add_argument('-t') #output image type (jpg, tif, bmp, or png)
     parser.add_argument('indir') # input directory
-    parser.add_argument('outdir') # output directory [default: indir.corpus]
+    parser.add_argument('outdir', default=indir.corpus) # output directory [default: indir.corpus]
     args = parser.parse_args()
+    a = args.a
+    g = args.g
     rows = args.rows
     cols = args.cols
+    t = args.t
+    indir = args.indir
+    outdir = args.outdir
     OrginRows = rows # made for dimensions
     OrginCols = cols
+
+    print("a: ", a)
+    print("g: ", g)
+    print("rows: ", rows)
+    print("cols: ", cols)
+    print("t: ", t)
+    print("indir: ", indir)
+    print("outdir: ", outdir)
 
     # Get monitor information
     for m in get_monitors(): #note: this gets takes the last monitor info

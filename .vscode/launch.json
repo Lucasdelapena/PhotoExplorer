@@ -11,7 +11,8 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                " "
+                "-a","1", "-g" , "2", "-rows", "3" , "-cols",
+                 "4" , "-t", "5", "6", "7"
             ]
         }
     ]
