@@ -8,11 +8,9 @@ import numpy as np
 import random
 import os
 import argparse
-#from PIL import Image // i dont know what this is used for
 from screeninfo import get_monitors
 
-#selfnote: when getting pictures make sure to get copyright free and location of where you receieved the picture
-
+#sample execution: python Assignment2_CS4420.py -a -g -rows 480 -cols 640 -t jpg dir outdir
 def main():
     # Arguments
     parser = argparse.ArgumentParser(prog='corpus') # -h should be automatically added because of argparse
@@ -33,15 +31,7 @@ def main():
     outdir = args.outdir
     OrginRows = rows # made for dimensions
     OrginCols = cols
-
-    print("a: ", a)
-    print("g: ", g)
-    print("rows: ", rows)
-    print("cols: ", cols)
-    print("t: ", t)
-    print("indir: ", indir)
-    print("outdir: ", outdir)
-
+    
     #checking for valid input -t type
     if t != None:
         if t != "jpg" and t != "tif" and t != "bmp" and t != "png":
@@ -145,6 +135,7 @@ def main():
             
             #newWidth = OrginRows
             #newHeight = OrginCols
+            image = cv2.resize(image, (newWidth, newHeight ))
             cv2.imshow('Image Window', image)
 
         # Grayscale

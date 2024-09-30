@@ -1,0 +1,14 @@
+Lucas de la Pena
+
+Use this to run the code:
+python Assignment2_CS4420.py -a -g -rows numrows -cols numcols -t type indir outdir
+
+
+This program is built off python 3 and is needed to run. You will also need to install opencv-python, and screeninfo.with this project I just didn't have a lot of time to spend on it so it wasn't as perfected as I wanted it to be. Doing this project it seems easier than it is which is upsetting because I've should've spent more time on it.
+
+Sample execution:
+python Assignment2_CS4420.py -a -g -rows 480 -cols 640 -t jpg dir outdir
+
+installs:
+pip install screen info
+pip install opencv-python
