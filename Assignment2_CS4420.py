@@ -16,13 +16,13 @@ from screeninfo import get_monitors
 def main():
     # Arguments
     parser = argparse.ArgumentParser(prog='corpus') # -h should be automatically added because of argparse
-    parser.add_argument('-a') # preserve the aspect ratio of the image
-    parser.add_argument('-g') # save the output image as grayscale (default: save as input)
+    parser.add_argument('-a', action='store_true') # preserve the aspect ratio of the image
+    parser.add_argument('-g', action='store_true') # save the output image as grayscale (default: save as input)
     parser.add_argument('-rows', type=int, default=480) # -r max number of rows
     parser.add_argument('-cols', type=int, default=640) # -c max number of cols
     parser.add_argument('-t') #output image type (jpg, tif, bmp, or png)
     parser.add_argument('indir') # input directory
-    parser.add_argument('outdir', default=indir.corpus) # output directory [default: indir.corpus]
+    parser.add_argument('outdir')#, default=indir.corpus # output directory [default: indir.corpus]
     args = parser.parse_args()
     a = args.a
     g = args.g
@@ -42,11 +42,25 @@ def main():
     print("indir: ", indir)
     print("outdir: ", outdir)
 
+    #checking for valid input -t type
+    if t != None:
+        if t != "jpg" and t != "tif" and t != "bmp" and t != "png":
+            print("Invalid output image type. Please use jpg, tif, bmp, or png")
+            exit()
+        outputType = t
+
     # Get monitor information
     for m in get_monitors(): #note: this gets takes the last monitor info
         maxWidth = m.width
         maxHeight = m.height
     
+    # Create output directory
+    if outdir == None:
+        outdir = indir + ".corpus"
+        os.makedirs(outdir, exist_ok=True)
+    else:
+        os.makedirs(outdir, exist_ok=True)
+
      # Check if rows and cols are greater than the monitor size
     if rows > maxWidth:
         rows = maxWidth - 200
@@ -54,7 +68,7 @@ def main():
         cols = maxHeight - 200
 
     # lists and directory
-    dir = args.dir
+    dir = args.indir
     picslist = []
     filenameList = []
 
@@ -113,11 +127,36 @@ def main():
             cv2.imshow('Image Window', image)
            
         #Window resizing
-        else:
-            newWidth = OrginRows
-            newHeight = OrginCols
+        else: #here change it so if the image is bigger than max rows and cols change it
+            if image.shape[1] > OrginCols or image.shape[0] > OrginRows:
+                width = image.shape[1]
+                height = image.shape[0]
+                ratio = width / height
+
+                if width > OrginCols:
+                    newWidth = OrginCols
+                    newHeight = int(newWidth / ratio)
+                elif height > OrginRows:
+                    newHeight = OrginRows
+                    newWidth = int(newHeight * ratio)
+                else:
+                    newWidth = width
+                    newHeight = height
+            
+            #newWidth = OrginRows
+            #newHeight = OrginCols
             cv2.imshow('Image Window', image)
-                
+
+        # Grayscale
+        if g == True:
+            outputPath = os.path.join(outdir, filenameList[imageNumber])
+            if os.path.exists(outputPath):
+                continue
+            else:
+                # convert to typ
+                imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                cv2.imwrite(f"{outdir}/{filenameList[imageNumber]}.{t}", imageGray)
+
         # Output Variables
         fileName = filenameList[imageNumber]
         filePath = os.path.dirname(pic)
@@ -137,7 +176,13 @@ def main():
         print(f"File name: {fileName} | File path: {filePath} | Dimensions: {imageDimensions} | "
             f"Pixel Count: {numOfPixels} | File size: {fileSize} bytes | File type: {fileType} | "
             f"Color pixel at ({r},{c}) = {colorPixel}")
-    
+
+        #writing outputs to a file
+        with open(f"metadata", "a") as file:
+            file.write(f"File name: {fileName} | File path: {filePath} | Dimensions: {imageDimensions} | "
+            f"Pixel Count: {numOfPixels} | File size: {fileSize} bytes | File type: {fileType} | "
+            f"Color pixel at ({r},{c}) = {colorPixel}\n")
+
         # User actions
         useraction = cv2.waitKey(0) & 0xFF
     
