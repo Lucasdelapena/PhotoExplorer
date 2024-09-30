@@ -64,6 +64,94 @@ def main():
             picslist.append(os.path.join(dirpath, filename))
             filenameList.append(filename)
 
+    # This is for no window resizing
+    if rows == 0 or cols == 0:
+        noWinChange = True
+    else:
+        noWinChange = False
+        cv2.namedWindow("Image Window", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow('Image Window', rows, cols)
+
+    imageNumber = 0 # counter for loop
+    while True:
+        pic = picslist[imageNumber]
+        # Read the image
+        image = cv2.imread(pic)
+
+        # Check if the image was successfully loaded
+        if image is None:
+            filenameList.pop(imageNumber) # removing non-image files from the list
+            picslist.pop(imageNumber)
+            continue
+
+        # No window resizing
+        if noWinChange == True: #This works
+            cv2.imshow('Image Window', image)
+            
+            #This is for if the image is bigger than the screen
+            if image.shape[1] > maxWidth or image.shape[0] > maxHeight:
+               
+                width = image.shape[1]
+                height = image.shape[0]
+                ratio = width / height
+
+                if width > maxWidth:
+                    newWidth = maxWidth - 200
+                    newHeight = int(newWidth / ratio)
+                elif height > maxHeight:
+                    newHeight = maxHeight - 200
+                    newWidth = int(newHeight * ratio)
+                else:
+                    newWidth = width
+                    newHeight = height
+            else:
+                newWidth = image.shape[1]
+                newHeight = image.shape[0]        
+
+            image = cv2.resize(image, (newWidth, newHeight ))
+            cv2.resizeWindow('Image Window', newWidth , newHeight)
+            cv2.imshow('Image Window', image)
+           
+        #Window resizing
+        else:
+            newWidth = OrginRows
+            newHeight = OrginCols
+            cv2.imshow('Image Window', image)
+                
+        # Output Variables
+        fileName = filenameList[imageNumber]
+        filePath = os.path.dirname(pic)
+        imageDimensions = f"{newWidth} x {newHeight}"
+        numOfPixels = image.size
+        fileSize = os.path.getsize(pic)
+        fileType = os.path.splitext(pic)[1]
+
+        # Display value at a random pixel
+        rows, cols, _ = image.shape
+        r = random.randint(0, rows - 1)
+        c = random.randint(0, cols - 1)
+        pixelColor = image[r, c]
+        colorPixel = f"({int(pixelColor[0])}, {int(pixelColor[1])}, {int(pixelColor[2])})"
+
+        #outputs
+        print(f"File name: {fileName} | File path: {filePath} | Dimensions: {imageDimensions} | "
+            f"Pixel Count: {numOfPixels} | File size: {fileSize} bytes | File type: {fileType} | "
+            f"Color pixel at ({r},{c}) = {colorPixel}")
+    
+        # User actions
+        useraction = cv2.waitKey(0) & 0xFF
+    
+        if useraction == ord('n'):
+            if imageNumber < len(picslist) - 1:
+                imageNumber += 1
+        
+        if useraction == ord('p'):
+            if imageNumber > 0:
+                imageNumber -= 1
+
+        if useraction == ord('q'):
+            break
+
     
 
 if __name__ == "__main__":
