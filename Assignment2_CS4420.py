@@ -184,8 +184,18 @@ def main():
         pixelColor = image[r, c]
         colorPixel = f"({int(pixelColor[0])}, {int(pixelColor[1])}, {int(pixelColor[2])})"
 
+        # Website source (only works when they are in the right directory)
+        website = "Unknown"
+        print(filePath)
+        if filePath == "dir\sedan":
+            website = "pixabay.com/images/search/sedan/"
+            
+        if filePath == "dir\suv":
+            website = "www.pexels.com/search/suv/"
+
+
         #outputs
-        print(f"File name: {fileName} | File path: {filePath} | Dimensions: {imageDimensions} | "
+        print(f"File name: {fileName} | File path: {filePath} | Source: {website} | Dimensions: {imageDimensions} | "
             f"Pixel Count: {numOfPixels} | File size: {fileSize} bytes | File type: {fileType} | "
             f"Color pixel at ({r},{c}) = {colorPixel}")
 
