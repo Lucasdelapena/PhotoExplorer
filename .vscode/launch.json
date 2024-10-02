@@ -11,8 +11,8 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "-a", "-g", "", "" , "",
-                 "" , "-t", "png", "dir", "7"
+                "-a", "-g", "-rows", "480" , "-cols",
+                 "640" , "-t", "png", "dir", "7"
             ]
         }
     ]

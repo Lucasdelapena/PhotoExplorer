@@ -29,8 +29,8 @@ def main():
     t = args.t
     indir = args.indir
     outdir = args.outdir
-    OrginRows = rows # made for dimensions
-    OrginCols = cols
+    OriginRows = rows # made for dimensions
+    OriginCols = cols
     
     #checking for valid input -t type
     if t != None:
@@ -117,25 +117,43 @@ def main():
             cv2.imshow('Image Window', image)
            
         #Window resizing
-        else: #here change it so if the image is bigger than max rows and cols change it
-            if image.shape[1] > OrginCols or image.shape[0] > OrginRows:
+        if noWinChange == False:
+            if image.shape[1] > OriginCols or image.shape[0] > OriginRows: #This is for if the image is bigger than monitor
                 width = image.shape[1]
                 height = image.shape[0]
                 ratio = width / height
 
-                if width > OrginCols:
-                    newWidth = OrginCols
+                if width > OriginCols:
+                    newWidth = OriginCols
                     newHeight = int(newWidth / ratio)
-                elif height > OrginRows:
-                    newHeight = OrginRows
+                elif height > OriginRows:
+                    newHeight = OriginRows
                     newWidth = int(newHeight * ratio)
                 else:
                     newWidth = width
                     newHeight = height
             
-            #newWidth = OrginRows
-            #newHeight = OrginCols
-            image = cv2.resize(image, (newWidth, newHeight ))
+            #aspect ratio
+            if a == True:
+                if image.shape[1] > OriginCols or image.shape[0] > OriginRows: 
+                    #reduce size of image with same aspect ratio
+                    height, width = image.shape[:2]
+                    ratio = width / height
+
+                    if width > OriginCols:
+                        newWidth = OriginCols
+                        newHeight = int(newWidth / ratio)
+                    else:
+                        newWidth = width
+                        newHeight = height
+                    if newHeight > OriginRows:
+                        newHeight = OriginRows
+                        newWidth = int(newHeight * ratio)
+                cv2.resizeWindow('Image Window', newWidth , newHeight)     
+                
+
+            
+            image = cv2.resize(image, (newWidth, newHeight))
             cv2.imshow('Image Window', image)
 
         # Grayscale
@@ -144,9 +162,12 @@ def main():
             if os.path.exists(outputPath):
                 continue
             else:
-                # convert to typ
+                # convert to gray
                 imageGray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-                cv2.imwrite(f"{outdir}/{filenameList[imageNumber]}.{t}", imageGray)
+                baseFileName = os.path.splitext(filenameList[imageNumber])
+                newFileName = f"{baseFileName[0]}.{t}"
+                cv2.imwrite(os.path.join(outdir, newFileName), imageGray)
+                
 
         # Output Variables
         fileName = filenameList[imageNumber]

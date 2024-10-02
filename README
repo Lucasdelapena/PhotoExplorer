@@ -12,3 +12,7 @@ python Assignment2_CS4420.py -a -g -rows 480 -cols 640 -t jpg dir outdir
 installs:
 pip install screen info
 pip install opencv-python
+
+
+Sources:
+https://www.geeksforgeeks.org/python-opencv-cv2-imwrite-method/
