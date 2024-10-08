@@ -185,6 +185,7 @@ def main():
         colorPixel = f"({int(pixelColor[0])}, {int(pixelColor[1])}, {int(pixelColor[2])})"
 
         # Website source (only works when they are in the right directory)
+        #flat file (filename, and pictures)
         website = "Unknown"
         print(filePath)
         if filePath == "dir\sedan":
