@@ -1,7 +1,7 @@
 Lucas de la Pena
 
 Use this to run the code:
-python Assignment2_CS4420.py -a -g -rows numrows -cols numcols -t type indir outdir
+python PhotoExplorer.py -a -g -rows numrows -cols numcols -t type indir outdir
 
 
 This Program Browes through all images in a directory, displays them one at a time in an OpenCV window. Using the options you can change the size, convert to grayscale, and can save in a new format
