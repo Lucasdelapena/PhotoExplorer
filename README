@@ -4,10 +4,24 @@ Use this to run the code:
 python Assignment2_CS4420.py -a -g -rows numrows -cols numcols -t type indir outdir
 
 
-This program is built off python 3 and is needed to run. You will also need to install opencv-python, and screeninfo. With this project my biggest issue was tyring to get the aspect ratio to work and it was such a simple fix, I forgot to resize the window size and it's fixed now but I spent a lot of time trying to get this to work.
+This Program Browes through all images in a directory, displays them one at a time in an OpenCV window. Using the options you can change the size, convert to grayscale, and can save in a new format
+
+-a : preserve aspect ratio when resizing
+
+-g : Save output as grayscale
+
+-rows : Max window height
+
+-cols : Max window width
+
+-t : Output file type (jpg/tif/bmp/png)
+
+indir : Folder with input images
+
+outdir : folder to save processed images
 
 Sample execution:
-python Assignment2_CS4420.py -a -g -rows 480 -cols 640 -t jpg dir outdir
+python PhotoExplorer.py -a -g -rows 480 -cols 640 -t jpg dir outdir
 
 installs:
 pip install screen info
